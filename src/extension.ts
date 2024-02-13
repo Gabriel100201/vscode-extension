@@ -1,20 +1,27 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
 import * as vscode from "vscode";
+import WebSocket, { Server as WebSocketServer } from "ws";
 
 export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand(
-    "sugerencias.twComplete",
-    () => {
-      axios("https://dog.ceo/api/breeds/image/random")
-        .then((res: AxiosResponse) => {
+  let disposable = vscode.commands.registerCommand("sugerencias.twComplete", () => {
+      const server: WebSocketServer = new WebSocket.Server({ port: 4000 });
+      server.on("connection", (socket: WebSocket) => {
+        vscode.window.showInformationMessage("Nuevo cliente conectado");
+
+        socket.on("message", (message: WebSocket.Data) => {
           vscode.window.showInformationMessage(
-            `Respuesta recibida ${JSON.stringify(res.data.message)}`
+            `Mensaje recibido: ${message.toString()}`
           );
-        })
-        .catch((err: AxiosError) => {
-          vscode.window.showErrorMessage(`Error en la solicitud: ${err}`);
+
+          // Enviar el mensaje a todos los clientes conectados
+          server.clients.forEach((client) => {
+            if (client !== socket && client.readyState === WebSocket.OPEN) {
+              client.send(message);
+            }
+          });
         });
+      });
     }
+
   );
 
   context.subscriptions.push(disposable);

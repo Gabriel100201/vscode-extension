@@ -26,28 +26,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deactivate = exports.activate = void 0;
+exports.startServer = void 0;
+// Instala el módulo 'ws' utilizando npm install ws
 const vscode = __importStar(require("vscode"));
 const ws_1 = __importDefault(require("ws"));
-function activate(context) {
-    let disposable = vscode.commands.registerCommand("sugerencias.twComplete", () => {
-        const server = new ws_1.default.Server({ port: 4000 });
-        server.on("connection", (socket) => {
-            vscode.window.showInformationMessage("Nuevo cliente conectado");
-            socket.on("message", (message) => {
-                vscode.window.showInformationMessage(`Mensaje recibido: ${message.toString()}`);
-                // Enviar el mensaje a todos los clientes conectados
-                server.clients.forEach((client) => {
-                    if (client !== socket && client.readyState === ws_1.default.OPEN) {
-                        client.send(message);
-                    }
-                });
+const startServer = () => {
+    vscode.window.showInformationMessage("Ingreso a la funcion");
+    const server = new ws_1.default.Server({ port: 3000 });
+    server.on("connection", (socket) => {
+        vscode.window.showInformationMessage("Cliente conectado");
+        socket.on("message", (message) => {
+            vscode.window.showInformationMessage(`Mensaje recibido: ${message.toString()}`);
+            // Enviar el mensaje a todos los clientes conectados
+            server.clients.forEach((client) => {
+                if (client !== socket && client.readyState === ws_1.default.OPEN) {
+                    client.send(message);
+                }
             });
         });
     });
-    context.subscriptions.push(disposable);
-}
-exports.activate = activate;
-function deactivate() { }
-exports.deactivate = deactivate;
-//# sourceMappingURL=extension.js.map
+};
+exports.startServer = startServer;
+//# sourceMappingURL=socket.js.map

@@ -27,22 +27,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
+const axios_1 = __importDefault(require("axios"));
 const vscode = __importStar(require("vscode"));
-const ws_1 = __importDefault(require("ws"));
 function activate(context) {
     let disposable = vscode.commands.registerCommand("sugerencias.twComplete", () => {
-        const server = new ws_1.default.Server({ port: 4000 });
-        server.on("connection", (socket) => {
-            vscode.window.showInformationMessage("Nuevo cliente conectado");
-            socket.on("message", (message) => {
-                vscode.window.showInformationMessage(`Mensaje recibido: ${message.toString()}`);
-                // Enviar el mensaje a todos los clientes conectados
-                server.clients.forEach((client) => {
-                    if (client !== socket && client.readyState === ws_1.default.OPEN) {
-                        client.send(message);
-                    }
-                });
-            });
+        (0, axios_1.default)("https://dog.ceo/api/breeds/image/random")
+            .then((res) => {
+            vscode.window.showInformationMessage(`Respuesta recibida ${JSON.stringify(res.data.message)}`);
+        })
+            .catch((err) => {
+            vscode.window.showErrorMessage(`Error en la solicitud: ${err}`);
         });
     });
     context.subscriptions.push(disposable);
@@ -50,4 +44,4 @@ function activate(context) {
 exports.activate = activate;
 function deactivate() { }
 exports.deactivate = deactivate;
-//# sourceMappingURL=extension.js.map
+//# sourceMappingURL=extension_test.js.map
