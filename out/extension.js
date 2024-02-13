@@ -22,12 +22,22 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
+const axios_1 = __importDefault(require("axios"));
 const vscode = __importStar(require("vscode"));
 function activate(context) {
-    let disposable = vscode.commands.registerCommand('sugerencias.twComplete', () => {
-        vscode.window.showInformationMessage('Hello World from sugerencias!');
+    let disposable = vscode.commands.registerCommand("sugerencias.twComplete", () => {
+        (0, axios_1.default)("https://dog.ceo/api/breeds/image/random")
+            .then((res) => {
+            vscode.window.showInformationMessage(`Respuesta recibida ${JSON.stringify(res.data.message)}`);
+        })
+            .catch((err) => {
+            vscode.window.showErrorMessage(`Error en la solicitud: ${err}`);
+        });
     });
     context.subscriptions.push(disposable);
 }
