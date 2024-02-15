@@ -10,7 +10,7 @@ const ws = new ws_1.default(url);
   ws.send("Hola, servidor!");
 }); */
 ws.on("message", (data) => {
-    console.log("Mensaje recibido:", data);
+    console.log("Mensaje recibido:", data.toLocaleString());
 });
 ws.on("close", () => {
     console.log("Conexión cerrada.");

@@ -25,12 +25,22 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
-const socket_1 = require("./server/socket");
+const server_1 = require("./server");
 const connectToSession_1 = require("./client/connectToSession");
+const validateShare_1 = require("./server/validateShare");
+const showInfo_1 = require("./messages/showInfo");
+/* import { validateShare } from "./server/validateShare"; */
 function activate(context) {
-    let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", () => {
-        // Se crea un server WS
-        (0, socket_1.startServer)();
+    let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", async () => {
+        const isServerOpen = await (0, validateShare_1.validateShare)();
+        if (isServerOpen) {
+            (0, showInfo_1.showInfo)("Ya hay una session en esta red");
+            return;
+        }
+        else {
+            // Se crea un server WS
+            (0, server_1.startServer)();
+        }
     });
     let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", () => {
         // Busca una session activa de liveShare

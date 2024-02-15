@@ -53,4 +53,4 @@ const getSessionId = () => {
     const sessionId = liveshareInfo?.exports.liveShareApis[0].session.id;
     return sessionId;
 };
-//# sourceMappingURL=socket.js.map
+//# sourceMappingURL=index.js.map

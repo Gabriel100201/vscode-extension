@@ -8,7 +8,7 @@ const ws = new WebSocket(url);
 }); */
 
 ws.on("message", (data: WebSocket.Data) => {
-  console.log("Mensaje recibido:", data);
+  console.log("Mensaje recibido:", data.toLocaleString());
 });
 
 ws.on("close", () => {

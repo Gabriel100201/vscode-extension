@@ -1,14 +1,22 @@
 import * as vscode from "vscode";
-import { startServer } from "./server/socket";
-import { showInfo } from "./messages/showInfo";
+import { startServer } from "./server";
 import { findSession } from "./client/connectToSession";
+import { validateShare } from "./server/validateShare";
+import { showInfo } from "./messages/showInfo";
+/* import { validateShare } from "./server/validateShare"; */
 
 export function activate(context: vscode.ExtensionContext) {
   let serverConfig = vscode.commands.registerCommand(
     "sugerencias.openServer",
-    () => {
-      // Se crea un server WS
-      startServer();
+    async () => {
+      const isServerOpen = await validateShare();
+      if (isServerOpen) {
+        showInfo("Ya hay una session en esta red");
+        return;
+      } else {
+        // Se crea un server WS
+        startServer();
+      }
     }
   );
 

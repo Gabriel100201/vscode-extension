@@ -18,18 +18,9 @@ export const startServer = async () => {
     showInfo("Nuevo cliente conectado");
 
     server.clients.forEach((client) => {
-      client.send(getSessionId().toString());
-      showInfo(getSessionId().toString());
+      client.send(getSessionId());
+      showInfo(getSessionId());
     });
-
-    /* socket.on("message", (message: WebSocket.Data) => {
-      showInfo(`Mensaje recibido: ${message.toString()}`);
-      server.clients.forEach((client) => {
-        if (client !== socket && client.readyState === WebSocket.OPEN) {
-          client.send(message);
-        }
-      });
-    }); */
   });
 };
 
@@ -37,8 +28,6 @@ const getSessionId = () => {
   const liveshareInfo = vscode.extensions.getExtension(
     "MS-vsliveshare.vsliveshare"
   );
-  const sessionId = JSON.stringify(
-    liveshareInfo?.exports.liveShareApis[0].session.id
-  );
+  const sessionId = liveshareInfo?.exports.liveShareApis[0].session.id;
   return sessionId;
 };
