@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import WebSocket, { Server as WebSocketServer } from "ws";
-import { showInfo } from "../messages/startServer";
+import { showInfo } from "../messages/showInfo";
 
 export const startServer = async () => {
   await vscode.commands.executeCommand("liveshare.start");

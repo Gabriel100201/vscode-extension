@@ -29,17 +29,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.startServer = void 0;
 const vscode = __importStar(require("vscode"));
 const ws_1 = __importDefault(require("ws"));
-const startServer_1 = require("../messages/startServer");
+const showInfo_1 = require("../messages/showInfo");
 const startServer = async () => {
     await vscode.commands.executeCommand("liveshare.start");
-    (0, startServer_1.showInfo)("Compartiendo session");
-    (0, startServer_1.showInfo)(getSessionId());
+    (0, showInfo_1.showInfo)("Compartiendo session");
+    (0, showInfo_1.showInfo)(getSessionId());
     const server = new ws_1.default.Server({ port: 4000 });
     // Cada vez que se conecta un cliente se activa esto
     server.on("connection", (socket) => {
-        (0, startServer_1.showInfo)("Nuevo cliente conectado");
+        (0, showInfo_1.showInfo)("Nuevo cliente conectado");
         socket.on("message", (message) => {
-            (0, startServer_1.showInfo)(`Mensaje recibido: ${message.toString()}`);
+            (0, showInfo_1.showInfo)(`Mensaje recibido: ${message.toString()}`);
             server.clients.forEach((client) => {
                 if (client !== socket && client.readyState === ws_1.default.OPEN) {
                     client.send(message);

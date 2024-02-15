@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { startServer } from "./server/socket";
-import { showInfo } from "./messages/startServer";
+import { showInfo } from "./messages/showInfo";
 
 export function activate(context: vscode.ExtensionContext) {
   let serverConfig = vscode.commands.registerCommand(
