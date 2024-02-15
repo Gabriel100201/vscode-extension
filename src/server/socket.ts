@@ -1,21 +1,20 @@
-// Instala el módulo 'ws' utilizando npm install ws
 import * as vscode from "vscode";
 import WebSocket, { Server as WebSocketServer } from "ws";
+import { showInfo } from "../messages/startServer";
 
-export const startServer = () => {
-  // Se inicializa el servidor
+export const startServer = async () => {
+  await vscode.commands.executeCommand("liveshare.start");
+  showInfo("Compartiendo session");
+  showInfo(getSessionId());
+
   const server: WebSocketServer = new WebSocket.Server({ port: 4000 });
-  // Notificacion de inicio
-  vscode.window.showInformationMessage("Compartiendo liveShare");
+
+  // Cada vez que se conecta un cliente se activa esto
   server.on("connection", (socket: WebSocket) => {
-    // Notificacion de cliente conectado
-    vscode.window.showInformationMessage("Nuevo cliente conectado");
-    
-    // Evento disparado cuando se recibe un mensaje
+    showInfo("Nuevo cliente conectado");
+
     socket.on("message", (message: WebSocket.Data) => {
-      vscode.window.showInformationMessage(
-        `Mensaje recibido: ${message.toString()}`
-      );
+      showInfo(`Mensaje recibido: ${message.toString()}`);
       server.clients.forEach((client) => {
         if (client !== socket && client.readyState === WebSocket.OPEN) {
           client.send(message);
@@ -25,4 +24,12 @@ export const startServer = () => {
   });
 };
 
-// FACF356E6CC62F054743359707915C1E8BD4
+const getSessionId = () => {
+  const liveshareInfo = vscode.extensions.getExtension(
+    "MS-vsliveshare.vsliveshare"
+  );
+  const sessionId = JSON.stringify(
+    liveshareInfo?.exports.liveShareApis[0].session.id
+  );
+  return sessionId;
+};

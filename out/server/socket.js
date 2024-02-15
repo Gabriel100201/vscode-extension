@@ -27,20 +27,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.startServer = void 0;
-// Instala el módulo 'ws' utilizando npm install ws
 const vscode = __importStar(require("vscode"));
 const ws_1 = __importDefault(require("ws"));
-const startServer = () => {
-    // Se inicializa el servidor
+const startServer_1 = require("../messages/startServer");
+const startServer = async () => {
+    await vscode.commands.executeCommand("liveshare.start");
+    (0, startServer_1.showInfo)("Compartiendo session");
+    (0, startServer_1.showInfo)(getSessionId());
     const server = new ws_1.default.Server({ port: 4000 });
-    // Notificacion de inicio
-    vscode.window.showInformationMessage("Compartiendo liveShare");
+    // Cada vez que se conecta un cliente se activa esto
     server.on("connection", (socket) => {
-        // Notificacion de cliente conectado
-        vscode.window.showInformationMessage("Nuevo cliente conectado");
-        // Evento disparado cuando se recibe un mensaje
+        (0, startServer_1.showInfo)("Nuevo cliente conectado");
         socket.on("message", (message) => {
-            vscode.window.showInformationMessage(`Mensaje recibido: ${message.toString()}`);
+            (0, startServer_1.showInfo)(`Mensaje recibido: ${message.toString()}`);
             server.clients.forEach((client) => {
                 if (client !== socket && client.readyState === ws_1.default.OPEN) {
                     client.send(message);
@@ -50,5 +49,9 @@ const startServer = () => {
     });
 };
 exports.startServer = startServer;
-// FACF356E6CC62F054743359707915C1E8BD4
+const getSessionId = () => {
+    const liveshareInfo = vscode.extensions.getExtension("MS-vsliveshare.vsliveshare");
+    const sessionId = JSON.stringify(liveshareInfo?.exports.liveShareApis[0].session.id);
+    return sessionId;
+};
 //# sourceMappingURL=socket.js.map

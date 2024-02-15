@@ -3,9 +3,9 @@ import WebSocket from "ws";
 const url = "ws://localhost:4000";
 const ws = new WebSocket(url);
 
-ws.on("open", () => {
+/* ws.on("open", () => {
   ws.send("Hola, servidor!");
-});
+}); */
 
 ws.on("message", (data: WebSocket.Data) => {
   console.log("Mensaje recibido:", data);

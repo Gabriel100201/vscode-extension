@@ -1,22 +1,13 @@
 import * as vscode from "vscode";
 import { startServer } from "./server/socket";
+import { showInfo } from "./messages/startServer";
 
 export function activate(context: vscode.ExtensionContext) {
   let serverConfig = vscode.commands.registerCommand(
     "sugerencias.openServer",
     () => {
+      // Se crea un server WS
       startServer();
-      const showLiveShareInfo = async () => {
-        await vscode.commands.executeCommand("liveshare.start");
-        const liveshareInfo = vscode.extensions.getExtension(
-          "MS-vsliveshare.vsliveshare"
-        );
-        vscode.window.showInformationMessage(
-          JSON.stringify(liveshareInfo?.exports.liveShareApis[0].session.id)
-        );
-      };
-
-      showLiveShareInfo();
     }
   );
 
@@ -24,13 +15,11 @@ export function activate(context: vscode.ExtensionContext) {
     "sugerencias.openConnection",
     () => {
       async function joinLiveShareSession(sessionId: string) {
-
-        const link = `vscode://ms-vsliveshare.vsliveshare/join?vslsLink=${sessionId}`;
+        const link = `vscode://ms-vsliveshare.vsliveshare/join?vslsLink=https://prod.liveshare.vsengsaas.visualstudio.com/join?${sessionId}`;
         const uriLink = vscode.Uri.parse(link);
-        vscode.window.showInformationMessage(uriLink.toString());
         await vscode.env.openExternal(uriLink);
       }
-      joinLiveShareSession("https://prod.liveshare.vsengsaas.visualstudio.com/join?4CDA819C42B36F157DB6E54E42AFB525FB58");
+      joinLiveShareSession("4CDA819C42B36F157DB6E54E42AFB525FB58");
     }
   );
 
