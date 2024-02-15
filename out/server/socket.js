@@ -30,22 +30,29 @@ exports.startServer = void 0;
 const vscode = __importStar(require("vscode"));
 const ws_1 = __importDefault(require("ws"));
 const showInfo_1 = require("../messages/showInfo");
+const bonjour_1 = __importDefault(require("bonjour"));
+const comChannel = (0, bonjour_1.default)();
+const serviceType = "FAST_SHARE";
 const startServer = async () => {
+    const server = new ws_1.default.Server({ port: 4000 });
+    comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
     await vscode.commands.executeCommand("liveshare.start");
     (0, showInfo_1.showInfo)("Compartiendo session");
-    (0, showInfo_1.showInfo)(getSessionId());
-    const server = new ws_1.default.Server({ port: 4000 });
     // Cada vez que se conecta un cliente se activa esto
     server.on("connection", (socket) => {
         (0, showInfo_1.showInfo)("Nuevo cliente conectado");
-        socket.on("message", (message) => {
-            (0, showInfo_1.showInfo)(`Mensaje recibido: ${message.toString()}`);
-            server.clients.forEach((client) => {
-                if (client !== socket && client.readyState === ws_1.default.OPEN) {
-                    client.send(message);
-                }
-            });
+        server.clients.forEach((client) => {
+            client.send(getSessionId().toString());
+            (0, showInfo_1.showInfo)(getSessionId().toString());
         });
+        /* socket.on("message", (message: WebSocket.Data) => {
+          showInfo(`Mensaje recibido: ${message.toString()}`);
+          server.clients.forEach((client) => {
+            if (client !== socket && client.readyState === WebSocket.OPEN) {
+              client.send(message);
+            }
+          });
+        }); */
     });
 };
 exports.startServer = startServer;
