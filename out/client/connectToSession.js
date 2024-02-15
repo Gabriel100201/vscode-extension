@@ -26,6 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.findSession = void 0;
 const vscode = __importStar(require("vscode"));
 const bonjour_1 = __importDefault(require("bonjour"));
 const ws_1 = __importDefault(require("ws"));
@@ -46,5 +47,5 @@ const findSession = () => {
         }
     });
 };
-findSession();
+exports.findSession = findSession;
 //# sourceMappingURL=connectToSession.js.map

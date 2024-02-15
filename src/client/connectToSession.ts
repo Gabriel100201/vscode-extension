@@ -10,7 +10,7 @@ const openSession = async (sessionId: string) => {
   await vscode.env.openExternal(uriLink);
 };
 
-const findSession = () => {
+export const findSession = () => {
   comChannel.find({ type: "FAST_SHARE" }, function (service) {
     if (service.type === "FAST_SHARE") {
       const url = `ws://${service.referer.address}:${service.port}`;
@@ -22,5 +22,3 @@ const findSession = () => {
     }
   });
 };
-
-findSession();

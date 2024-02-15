@@ -26,18 +26,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
 const socket_1 = require("./server/socket");
+const connectToSession_1 = require("./client/connectToSession");
 function activate(context) {
     let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", () => {
         // Se crea un server WS
         (0, socket_1.startServer)();
     });
     let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", () => {
-        async function joinLiveShareSession(sessionId) {
-            const link = `vscode://ms-vsliveshare.vsliveshare/join?vslsLink=https://prod.liveshare.vsengsaas.visualstudio.com/join?${sessionId}`;
-            const uriLink = vscode.Uri.parse(link);
-            await vscode.env.openExternal(uriLink);
-        }
-        joinLiveShareSession("4CDA819C42B36F157DB6E54E42AFB525FB58");
+        // Busca una session activa de liveShare
+        (0, connectToSession_1.findSession)();
     });
     context.subscriptions.push(serverConfig);
     context.subscriptions.push(connectToCode);
