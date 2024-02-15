@@ -22,13 +22,3 @@ export const validateShare = async () => {
     });
   });
 };
-
-const start = async () => {
-  const isServerOpen = await validateShare();
-  if (isServerOpen) {
-    console.log("Ya hay una session en esta red");
-    return;
-  } else {
-    console.log("Creando Server");
-  }
-};

@@ -26,14 +26,4 @@ const validateShare = async () => {
     });
 };
 exports.validateShare = validateShare;
-const start = async () => {
-    const isServerOpen = await (0, exports.validateShare)();
-    if (isServerOpen) {
-        console.log("Ya hay una session en esta red");
-        return;
-    }
-    else {
-        console.log("Creando Server");
-    }
-};
 //# sourceMappingURL=validateShare.js.map
