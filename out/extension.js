@@ -22,30 +22,31 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
-const ws_1 = __importDefault(require("ws"));
+const socket_1 = require("./server/socket");
 function activate(context) {
-    let disposable = vscode.commands.registerCommand("sugerencias.twComplete", () => {
-        const server = new ws_1.default.Server({ port: 4000 });
-        server.on("connection", (socket) => {
-            vscode.window.showInformationMessage("Nuevo cliente conectado");
-            socket.on("message", (message) => {
-                vscode.window.showInformationMessage(`Mensaje recibido: ${message.toString()}`);
-                // Enviar el mensaje a todos los clientes conectados
-                server.clients.forEach((client) => {
-                    if (client !== socket && client.readyState === ws_1.default.OPEN) {
-                        client.send(message);
-                    }
-                });
-            });
-        });
+    let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", () => {
+        (0, socket_1.startServer)();
+        const showLiveShareInfo = async () => {
+            await vscode.commands.executeCommand("liveshare.start");
+            const liveshareInfo = vscode.extensions.getExtension("MS-vsliveshare.vsliveshare");
+            vscode.window.showInformationMessage(JSON.stringify(liveshareInfo?.exports.liveShareApis[0].session.id));
+        };
+        showLiveShareInfo();
     });
-    context.subscriptions.push(disposable);
+    let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", () => {
+        async function joinLiveShareSession(sessionId) {
+            const link = `vscode://ms-vsliveshare.vsliveshare/join?vslsLink=${sessionId}`;
+            const uriLink = vscode.Uri.parse(link);
+            vscode.window.showInformationMessage(uriLink.toString());
+            await vscode.env.openExternal(uriLink);
+        }
+        joinLiveShareSession("https://prod.liveshare.vsengsaas.visualstudio.com/join?4CDA819C42B36F157DB6E54E42AFB525FB58");
+    });
+    context.subscriptions.push(serverConfig);
+    context.subscriptions.push(connectToCode);
 }
 exports.activate = activate;
 function deactivate() { }

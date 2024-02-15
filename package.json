@@ -14,15 +14,19 @@
   "contributes": {
     "commands": [
       {
-        "command": "sugerencias.twComplete",
-        "title": "twComplete"
+        "command": "sugerencias.openServer",
+        "title": "openServer"
+      },
+      {
+        "command": "sugerencias.openConnection",
+        "title": "openConnection"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "testbar",
-          "title": "Test Bar",
+          "title": "FastShare",
           "icon": "./src/assets/duck.svg"
         }
       ]
@@ -31,18 +35,18 @@
       "testbar": [
         {
           "id": "package-dependencies",
-          "name": "Barra de prueba"
-        },
-        {
-          "id": "package-outline",
-          "name": "Barra de prueba"
+          "name": "Conexiones"
         }
       ]
     },
     "viewsWelcome": [
       {
         "view": "package-dependencies",
-        "contents": "[Enviar MSG](command:sugerencias.twComplete)"
+        "contents": "[Abrir Conexión](command:sugerencias.openServer)"
+      },
+      {
+        "view": "package-dependencies",
+        "contents": "[Conectarse](command:sugerencias.openConnection)"
       }
     ]
   },

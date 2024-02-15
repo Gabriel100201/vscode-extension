@@ -1,30 +1,40 @@
 import * as vscode from "vscode";
-import WebSocket, { Server as WebSocketServer } from "ws";
+import { startServer } from "./server/socket";
 
 export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand("sugerencias.twComplete", () => {
-      const server: WebSocketServer = new WebSocket.Server({ port: 4000 });
-      server.on("connection", (socket: WebSocket) => {
-        vscode.window.showInformationMessage("Nuevo cliente conectado");
+  let serverConfig = vscode.commands.registerCommand(
+    "sugerencias.openServer",
+    () => {
+      startServer();
+      const showLiveShareInfo = async () => {
+        await vscode.commands.executeCommand("liveshare.start");
+        const liveshareInfo = vscode.extensions.getExtension(
+          "MS-vsliveshare.vsliveshare"
+        );
+        vscode.window.showInformationMessage(
+          JSON.stringify(liveshareInfo?.exports.liveShareApis[0].session.id)
+        );
+      };
 
-        socket.on("message", (message: WebSocket.Data) => {
-          vscode.window.showInformationMessage(
-            `Mensaje recibido: ${message.toString()}`
-          );
-
-          // Enviar el mensaje a todos los clientes conectados
-          server.clients.forEach((client) => {
-            if (client !== socket && client.readyState === WebSocket.OPEN) {
-              client.send(message);
-            }
-          });
-        });
-      });
+      showLiveShareInfo();
     }
-
   );
 
-  context.subscriptions.push(disposable);
-}
+  let connectToCode = vscode.commands.registerCommand(
+    "sugerencias.openConnection",
+    () => {
+      async function joinLiveShareSession(sessionId: string) {
 
+        const link = `vscode://ms-vsliveshare.vsliveshare/join?vslsLink=${sessionId}`;
+        const uriLink = vscode.Uri.parse(link);
+        vscode.window.showInformationMessage(uriLink.toString());
+        await vscode.env.openExternal(uriLink);
+      }
+      joinLiveShareSession("https://prod.liveshare.vsengsaas.visualstudio.com/join?4CDA819C42B36F157DB6E54E42AFB525FB58");
+    }
+  );
+
+  context.subscriptions.push(serverConfig);
+  context.subscriptions.push(connectToCode);
+}
 export function deactivate() {}

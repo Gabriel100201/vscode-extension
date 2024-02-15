@@ -31,13 +31,16 @@ exports.startServer = void 0;
 const vscode = __importStar(require("vscode"));
 const ws_1 = __importDefault(require("ws"));
 const startServer = () => {
-    vscode.window.showInformationMessage("Ingreso a la funcion");
-    const server = new ws_1.default.Server({ port: 3000 });
+    // Se inicializa el servidor
+    const server = new ws_1.default.Server({ port: 4000 });
+    // Notificacion de inicio
+    vscode.window.showInformationMessage("Compartiendo liveShare");
     server.on("connection", (socket) => {
-        vscode.window.showInformationMessage("Cliente conectado");
+        // Notificacion de cliente conectado
+        vscode.window.showInformationMessage("Nuevo cliente conectado");
+        // Evento disparado cuando se recibe un mensaje
         socket.on("message", (message) => {
             vscode.window.showInformationMessage(`Mensaje recibido: ${message.toString()}`);
-            // Enviar el mensaje a todos los clientes conectados
             server.clients.forEach((client) => {
                 if (client !== socket && client.readyState === ws_1.default.OPEN) {
                     client.send(message);
@@ -47,4 +50,5 @@ const startServer = () => {
     });
 };
 exports.startServer = startServer;
+// FACF356E6CC62F054743359707915C1E8BD4
 //# sourceMappingURL=socket.js.map
