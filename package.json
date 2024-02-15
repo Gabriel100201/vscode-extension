@@ -25,27 +25,27 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "testbar",
+          "id": "fastShare",
           "title": "FastShare",
           "icon": "./src/assets/duck.svg"
         }
       ]
     },
     "views": {
-      "testbar": [
+      "fastShare": [
         {
-          "id": "package-dependencies",
+          "id": "conections",
           "name": "Conexiones"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "package-dependencies",
+        "view": "conections",
         "contents": "[Abrir Conexión](command:sugerencias.openServer)"
       },
       {
-        "view": "package-dependencies",
+        "view": "conections",
         "contents": "[Conectarse](command:sugerencias.openConnection)"
       }
     ]
