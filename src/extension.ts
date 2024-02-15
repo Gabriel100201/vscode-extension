@@ -3,7 +3,6 @@ import { startServer } from "./server";
 import { findSession } from "./client/connectToSession";
 import { validateShare } from "./server/validateShare";
 import { showInfo } from "./messages/showInfo";
-/* import { validateShare } from "./server/validateShare"; */
 
 export function activate(context: vscode.ExtensionContext) {
   let serverConfig = vscode.commands.registerCommand(
@@ -14,6 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
         showInfo("Ya hay una session en esta red");
         return;
       } else {
+        showInfo("Iniciando LiveShare");
         // Se crea un server WS
         startServer();
       }

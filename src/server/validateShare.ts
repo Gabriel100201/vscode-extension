@@ -1,8 +1,7 @@
 import bonjour from "bonjour";
 
-const comChannel = bonjour();
-
 export const validateShare = async () => {
+  const comChannel = bonjour();
   return new Promise<boolean>((resolve) => {
     let findTimeout: NodeJS.Timeout;
     let isServerOpen: boolean = false;
@@ -22,4 +21,14 @@ export const validateShare = async () => {
       }
     });
   });
+};
+
+const start = async () => {
+  const isServerOpen = await validateShare();
+  if (isServerOpen) {
+    console.log("Ya hay una session en esta red");
+    return;
+  } else {
+    console.log("Creando Server");
+  }
 };

@@ -29,7 +29,6 @@ const server_1 = require("./server");
 const connectToSession_1 = require("./client/connectToSession");
 const validateShare_1 = require("./server/validateShare");
 const showInfo_1 = require("./messages/showInfo");
-/* import { validateShare } from "./server/validateShare"; */
 function activate(context) {
     let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", async () => {
         const isServerOpen = await (0, validateShare_1.validateShare)();
@@ -38,6 +37,7 @@ function activate(context) {
             return;
         }
         else {
+            (0, showInfo_1.showInfo)("Iniciando LiveShare");
             // Se crea un server WS
             (0, server_1.startServer)();
         }

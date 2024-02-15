@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateShare = void 0;
 const bonjour_1 = __importDefault(require("bonjour"));
-const comChannel = (0, bonjour_1.default)();
 const validateShare = async () => {
+    const comChannel = (0, bonjour_1.default)();
     return new Promise((resolve) => {
         let findTimeout;
         let isServerOpen = false;
@@ -26,4 +26,14 @@ const validateShare = async () => {
     });
 };
 exports.validateShare = validateShare;
+const start = async () => {
+    const isServerOpen = await (0, exports.validateShare)();
+    if (isServerOpen) {
+        console.log("Ya hay una session en esta red");
+        return;
+    }
+    else {
+        console.log("Creando Server");
+    }
+};
 //# sourceMappingURL=validateShare.js.map

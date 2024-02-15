@@ -11,7 +11,6 @@ export const startServer = async () => {
   comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
 
   await vscode.commands.executeCommand("liveshare.start");
-  showInfo("Compartiendo session");
 
   // Cada vez que se conecta un cliente se activa esto
   server.on("connection", (socket: WebSocket) => {
@@ -19,7 +18,6 @@ export const startServer = async () => {
 
     server.clients.forEach((client) => {
       client.send(getSessionId());
-      showInfo(getSessionId());
     });
   });
 };
