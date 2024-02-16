@@ -36,6 +36,10 @@
         {
           "id": "conections",
           "name": "Conexiones"
+        },
+        {
+          "id": "nodeDependencies",
+          "name": "Node Dependencies"
         }
       ]
     },
