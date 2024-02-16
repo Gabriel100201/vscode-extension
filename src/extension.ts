@@ -3,22 +3,10 @@ import { startServer } from "./server";
 import { findSession } from "./client/connectToSession";
 import { validateShare } from "./server/validateShare";
 import { showInfo } from "./messages/showInfo";
-import { NodeDependenciesProvider } from "./views/treeDataProvider";
+import { loadUsers } from "./views/loadUsers";
 
 export function activate(context: vscode.ExtensionContext) {
-  const rootPath: any =
-    vscode.workspace.workspaceFolders &&
-    vscode.workspace.workspaceFolders.length > 0
-      ? vscode.workspace.workspaceFolders[0].uri.fsPath
-      : undefined;
-  vscode.window.registerTreeDataProvider(
-    "nodeDependencies",
-    new NodeDependenciesProvider(rootPath)
-  );
-  vscode.window.createTreeView("nodeDependencies", {
-    treeDataProvider: new NodeDependenciesProvider(rootPath),
-  });
-
+  
   let serverConfig = vscode.commands.registerCommand(
     "sugerencias.openServer",
     async () => {
@@ -42,7 +30,15 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  let showUsers = vscode.commands.registerCommand(
+    "sugerencias.showUserList",
+    () => {
+      loadUsers();
+    }
+  );
+
   context.subscriptions.push(serverConfig);
   context.subscriptions.push(connectToCode);
+  context.subscriptions.push(showUsers);
 }
 export function deactivate() {}

@@ -1,4 +1,8 @@
 import WebSocket from "ws";
+import * as vscode from "vscode";
+import bonjour from "bonjour";
+
+const comChannel = bonjour();
 
 const url = "ws://localhost:4000";
 const ws = new WebSocket(url);

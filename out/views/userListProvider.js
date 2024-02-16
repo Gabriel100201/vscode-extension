@@ -23,22 +23,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadUsers = void 0;
+exports.UserListDataProvider = void 0;
 const vscode = __importStar(require("vscode"));
-const userListProvider_1 = require("./userListProvider");
-const loadUsers = () => {
-    const loadUsersCommand = vscode.commands.registerCommand("sugerencias.loadUsers", async () => {
-        try {
-            const users = ["User 1", "User 2"];
-            // Mostrar la lista de usuarios en la vista
-            vscode.window.createTreeView("treeUsers", {
-                treeDataProvider: new userListProvider_1.UserListDataProvider(users),
-            });
-        }
-        catch (error) {
-            vscode.window.showErrorMessage(`Error al obtener la lista de usuarios: ${error.message}`);
-        }
-    });
-};
-exports.loadUsers = loadUsers;
-//# sourceMappingURL=treeDataProvider.js.map
+class UserListDataProvider {
+    users;
+    iconPath = new vscode.ThemeIcon("account");
+    constructor(users) {
+        this.users = users;
+    }
+    getTreeItem(element) {
+        const treeItem = new vscode.TreeItem(element);
+        treeItem.iconPath = this.iconPath;
+        treeItem.description = "Active";
+        treeItem.command = {
+            command: "sugerencias.openConnection",
+            title: "Open User Session",
+        };
+        return treeItem;
+    }
+    getChildren() {
+        return Promise.resolve(this.users);
+    }
+}
+exports.UserListDataProvider = UserListDataProvider;
+//# sourceMappingURL=userListProvider.js.map

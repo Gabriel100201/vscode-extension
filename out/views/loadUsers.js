@@ -26,19 +26,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadUsers = void 0;
 const vscode = __importStar(require("vscode"));
 const userListProvider_1 = require("./userListProvider");
-const loadUsers = () => {
-    const loadUsersCommand = vscode.commands.registerCommand("sugerencias.loadUsers", async () => {
-        try {
-            const users = ["User 1", "User 2"];
-            // Mostrar la lista de usuarios en la vista
-            vscode.window.createTreeView("treeUsers", {
-                treeDataProvider: new userListProvider_1.UserListDataProvider(users),
-            });
-        }
-        catch (error) {
-            vscode.window.showErrorMessage(`Error al obtener la lista de usuarios: ${error.message}`);
-        }
-    });
+const loadUsers = async () => {
+    try {
+        const users = ["Gabriel Funes", "Fabricio Castro"];
+        vscode.window.createTreeView("treeUsers", {
+            treeDataProvider: new userListProvider_1.UserListDataProvider(users),
+        });
+    }
+    catch (error) {
+        vscode.window.showErrorMessage(`Error al obtener la lista de usuarios: ${error.message}`);
+    }
 };
 exports.loadUsers = loadUsers;
-//# sourceMappingURL=treeDataProvider.js.map
+//# sourceMappingURL=loadUsers.js.map

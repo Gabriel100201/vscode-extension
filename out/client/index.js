@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ws_1 = __importDefault(require("ws"));
+const bonjour_1 = __importDefault(require("bonjour"));
+const comChannel = (0, bonjour_1.default)();
 const url = "ws://localhost:4000";
 const ws = new ws_1.default(url);
 /* ws.on("open", () => {

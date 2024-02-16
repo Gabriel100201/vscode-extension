@@ -29,16 +29,8 @@ const server_1 = require("./server");
 const connectToSession_1 = require("./client/connectToSession");
 const validateShare_1 = require("./server/validateShare");
 const showInfo_1 = require("./messages/showInfo");
-const treeDataProvider_1 = require("./views/treeDataProvider");
+const loadUsers_1 = require("./views/loadUsers");
 function activate(context) {
-    const rootPath = vscode.workspace.workspaceFolders &&
-        vscode.workspace.workspaceFolders.length > 0
-        ? vscode.workspace.workspaceFolders[0].uri.fsPath
-        : undefined;
-    vscode.window.registerTreeDataProvider("nodeDependencies", new treeDataProvider_1.NodeDependenciesProvider(rootPath));
-    vscode.window.createTreeView("nodeDependencies", {
-        treeDataProvider: new treeDataProvider_1.NodeDependenciesProvider(rootPath),
-    });
     let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", async () => {
         const isServerOpen = await (0, validateShare_1.validateShare)();
         if (isServerOpen) {
@@ -55,8 +47,12 @@ function activate(context) {
         // Busca una session activa de liveShare
         (0, connectToSession_1.findSession)();
     });
+    let showUsers = vscode.commands.registerCommand("sugerencias.showUserList", () => {
+        (0, loadUsers_1.loadUsers)();
+    });
     context.subscriptions.push(serverConfig);
     context.subscriptions.push(connectToCode);
+    context.subscriptions.push(showUsers);
 }
 exports.activate = activate;
 function deactivate() { }

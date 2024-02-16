@@ -20,6 +20,10 @@
       {
         "command": "sugerencias.openConnection",
         "title": "openConnection"
+      },
+      {
+        "command": "sugerencias.showUserList",
+        "title": "showUserList"
       }
     ],
     "viewsContainers": {
@@ -38,8 +42,8 @@
           "name": "Conexiones"
         },
         {
-          "id": "nodeDependencies",
-          "name": "Node Dependencies"
+          "id": "treeUsers",
+          "name": "Users List"
         }
       ]
     },
@@ -51,6 +55,10 @@
       {
         "view": "conections",
         "contents": "[Conectarse](command:sugerencias.openConnection)"
+      },
+      {
+        "view": "treeUsers",
+        "contents": "[Ver Sessions](command:sugerencias.showUserList)"
       }
     ]
   },
