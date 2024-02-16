@@ -41,7 +41,9 @@ const startServer = async () => {
     server.on("connection", (socket) => {
         (0, showInfo_1.showInfo)("Nuevo cliente conectado");
         server.clients.forEach((client) => {
-            client.send(getSessionId());
+            if (client !== socket) {
+                client.send(getSessionId());
+            }
         });
     });
 };

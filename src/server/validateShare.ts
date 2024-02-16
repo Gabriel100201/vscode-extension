@@ -10,7 +10,7 @@ export const validateShare = async () => {
     findTimeout = setTimeout(() => {
       comChannel.destroy();
       resolve(isServerOpen);
-    }, 5000);
+    }, 3000);
 
     comChannel.find({ type: "FAST_SHARE" }, function (service) {
       if (!isServerOpen) {
