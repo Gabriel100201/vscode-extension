@@ -30,6 +30,8 @@ exports.findSession = void 0;
 const vscode = __importStar(require("vscode"));
 const bonjour_1 = __importDefault(require("bonjour"));
 const ws_1 = __importDefault(require("ws"));
+let openConnectionButton;
+let isConnectionButtonEnabled = true;
 const comChannel = (0, bonjour_1.default)();
 let existingWebSocket = null;
 const openSession = async (sessionId) => {
@@ -38,20 +40,28 @@ const openSession = async (sessionId) => {
     await vscode.env.openExternal(uriLink);
 };
 const findSession = () => {
-    comChannel.find({ type: "FAST_SHARE" }, function (service) {
-        if (service.type === "FAST_SHARE") {
+    comChannel.findOne({ type: "FAST_SHARE" }, function (service) {
+        if (service && service.type === "FAST_SHARE") {
             const url = `ws://${service.referer.address}:${service.port}`;
-            if (!existingWebSocket) {
-                existingWebSocket = new ws_1.default(url);
-                existingWebSocket.on("message", (data) => {
-                    console.log("mensaje recibido");
-                    openSession(data.toString());
-                });
-                existingWebSocket.on("message", (data) => {
-                    console.log("mensaje recibido");
-                    openSession(data.toString());
-                });
+            // Cerrar la conexión existente antes de crear una nueva
+            if (existingWebSocket) {
+                existingWebSocket.close();
+                existingWebSocket = null;
             }
+            existingWebSocket = new ws_1.default(url);
+            existingWebSocket.on("open", () => {
+                existingWebSocket?.send("REQUEST");
+            });
+            existingWebSocket.on("message", (data) => {
+                openSession(data.toString());
+                if (openConnectionButton && isConnectionButtonEnabled) {
+                    openConnectionButton.command = undefined;
+                    isConnectionButtonEnabled = false;
+                }
+            });
+            existingWebSocket.on("close", () => {
+                existingWebSocket = null;
+            });
         }
     });
 };

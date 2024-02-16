@@ -50,7 +50,21 @@
     "viewsWelcome": [
       {
         "view": "conections",
-        "contents": "[Abrir Conexión](command:sugerencias.openServer)"
+        "contents": "[Abrir Conexión](command:sugerencias.openServer)",
+        "when": "openConnectionStatus == 'true'",
+        "enablement": "true"
+      },
+      {
+        "view": "conections",
+        "contents": "[Conexion Abierta](command:sugerencias.openServer)",
+        "when": "openConnectionStatus == 'false'",
+        "enablement": "false"
+      },
+      {
+        "view": "conections",
+        "contents": "[Cargando...](command:sugerencias.openServer)",
+        "when": "openConnectionStatus == 'loading'",
+        "enablement": "false"
       },
       {
         "view": "conections",

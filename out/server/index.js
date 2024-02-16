@@ -33,19 +33,20 @@ const showInfo_1 = require("../messages/showInfo");
 const bonjour_1 = __importDefault(require("bonjour"));
 const comChannel = (0, bonjour_1.default)();
 const serviceType = "FAST_SHARE";
+let server = null;
 const startServer = async () => {
-    const server = new ws_1.default.Server({ port: 4000 });
-    comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
-    await vscode.commands.executeCommand("liveshare.start");
-    // Cada vez que se conecta un cliente se activa esto
+    server = new ws_1.default.Server({ port: 4000 });
     server.on("connection", (socket) => {
         (0, showInfo_1.showInfo)("Nuevo cliente conectado");
-        server.clients.forEach((client) => {
-            if (client !== socket) {
-                client.send(getSessionId());
+        socket.on("message", (message) => {
+            if (message.toString() === "REQUEST") {
+                const generatedId = getSessionId();
+                socket.send(generatedId);
             }
         });
     });
+    comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
+    await vscode.commands.executeCommand("liveshare.start");
 };
 exports.startServer = startServer;
 const getSessionId = () => {

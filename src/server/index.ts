@@ -5,23 +5,25 @@ import bonjour from "bonjour";
 
 const comChannel = bonjour();
 const serviceType = "FAST_SHARE";
+let server: WebSocket.Server | null = null;
 
 export const startServer = async () => {
-  const server: WebSocketServer = new WebSocket.Server({ port: 4000 });
-  comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
+  server = new WebSocket.Server({ port: 4000 });
 
-  await vscode.commands.executeCommand("liveshare.start");
-
-  // Cada vez que se conecta un cliente se activa esto
   server.on("connection", (socket: WebSocket) => {
     showInfo("Nuevo cliente conectado");
 
-    server.clients.forEach((client) => {
-      if (client !== socket) {
-        client.send(getSessionId());
+    socket.on("message", (message: WebSocket.Data) => {
+      if (message.toString() === "REQUEST") {
+        const generatedId = getSessionId();
+        socket.send(generatedId);
       }
     });
   });
+
+  comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
+
+  await vscode.commands.executeCommand("liveshare.start");
 };
 
 const getSessionId = () => {
