@@ -9,7 +9,6 @@ import { updateStatus } from "./views/updateStatus";
 updateStatus("openConnectionStatus", "true");
 
 export function activate(context: vscode.ExtensionContext) {
-  
   let serverConfig = vscode.commands.registerCommand(
     "sugerencias.openServer",
     async () => {
@@ -46,5 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(serverConfig);
   context.subscriptions.push(connectToCode);
   context.subscriptions.push(showUsers);
+
+  vscode.commands.executeCommand("sugerencias.showUserList");
 }
 export function deactivate() {}

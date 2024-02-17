@@ -23,9 +23,19 @@
       },
       {
         "command": "sugerencias.showUserList",
-        "title": "showUserList"
+        "title": "Actualizar Usuarios",
+        "icon": "$(refresh)"
       }
     ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "sugerencias.showUserList",
+          "group": "navigation",
+          "when": "view == treeUsers"
+        }
+      ]
+    },
     "viewsContainers": {
       "activitybar": [
         {
@@ -65,14 +75,6 @@
         "contents": "[Cargando...](command:sugerencias.openServer)",
         "when": "openConnectionStatus == 'loading'",
         "enablement": "false"
-      },
-      {
-        "view": "conections",
-        "contents": "[Conectarse](command:sugerencias.openConnection)"
-      },
-      {
-        "view": "treeUsers",
-        "contents": "[Ver Sessions](command:sugerencias.showUserList)"
       }
     ]
   },

@@ -58,6 +58,7 @@ function activate(context) {
     context.subscriptions.push(serverConfig);
     context.subscriptions.push(connectToCode);
     context.subscriptions.push(showUsers);
+    vscode.commands.executeCommand("sugerencias.showUserList");
 }
 exports.activate = activate;
 function deactivate() { }

@@ -22,3 +22,4 @@ export class UserListDataProvider implements vscode.TreeDataProvider<string> {
     return Promise.resolve(this.users);
   }
 }
+
