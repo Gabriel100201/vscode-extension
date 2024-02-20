@@ -6,24 +6,13 @@ import { showInfo } from "./messages/showInfo";
 import { loadUsers } from "./views/loadUsers";
 import { updateStatus } from "./views/updateStatus";
 
+// DEFINICIÓN DE VARIABLE GLOBAL
 updateStatus("openConnectionStatus", "true");
 
 export function activate(context: vscode.ExtensionContext) {
   let serverConfig = vscode.commands.registerCommand(
-    "sugerencias.openServer",
-    async () => {
-      updateStatus("openConnectionStatus", "loading");
-      const isServerOpen = await validateShare();
-      if (isServerOpen) {
-        showInfo("Ya hay una session en esta red");
-        updateStatus("openConnectionStatus", "false");
-        return;
-      } else {
-        showInfo("Iniciando LiveShare");
-        // Se crea un server WS
-        startServer();
-        updateStatus("openConnectionStatus", "false");
-      }
+    "sugerencias.openServer", async () => {
+      
     }
   );
 

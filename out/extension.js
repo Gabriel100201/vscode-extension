@@ -25,28 +25,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
-const server_1 = require("./server");
 const connectToSession_1 = require("./client/connectToSession");
-const validateShare_1 = require("./server/validateShare");
-const showInfo_1 = require("./messages/showInfo");
 const loadUsers_1 = require("./views/loadUsers");
 const updateStatus_1 = require("./views/updateStatus");
+// DEFINICIÓN DE VARIABLE GLOBAL
 (0, updateStatus_1.updateStatus)("openConnectionStatus", "true");
 function activate(context) {
     let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", async () => {
-        (0, updateStatus_1.updateStatus)("openConnectionStatus", "loading");
-        const isServerOpen = await (0, validateShare_1.validateShare)();
-        if (isServerOpen) {
-            (0, showInfo_1.showInfo)("Ya hay una session en esta red");
-            (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
-            return;
-        }
-        else {
-            (0, showInfo_1.showInfo)("Iniciando LiveShare");
-            // Se crea un server WS
-            (0, server_1.startServer)();
-            (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
-        }
     });
     let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", () => {
         // Busca una session activa de liveShare

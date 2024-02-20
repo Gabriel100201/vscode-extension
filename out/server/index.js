@@ -28,30 +28,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.startServer = void 0;
 const vscode = __importStar(require("vscode"));
+const vsls = __importStar(require("vsls"));
+const bonjour_1 = __importDefault(require("bonjour"));
 const ws_1 = __importDefault(require("ws"));
 const showInfo_1 = require("../messages/showInfo");
-const bonjour_1 = __importDefault(require("bonjour"));
+const updateStatus_1 = require("../views/updateStatus");
+const validateShare_1 = require("./validateShare");
 const comChannel = (0, bonjour_1.default)();
 const serviceType = "FAST_SHARE";
 let server = null;
 const startServer = async () => {
+    (0, updateStatus_1.updateStatus)("openConnectionStatus", "loading");
+    const isServerOpen = await (0, validateShare_1.validateShare)();
+    if (isServerOpen) {
+        (0, showInfo_1.showInfo)("Ya hay una session en esta red");
+        (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
+        return;
+    }
+    else {
+        (0, showInfo_1.showInfo)("Iniciando LiveShare");
+        initWS();
+        (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
+    }
+};
+exports.startServer = startServer;
+const initWS = async () => {
     server = new ws_1.default.Server({ port: 4000 });
     server.on("connection", (socket) => {
         (0, showInfo_1.showInfo)("Nuevo cliente conectado");
-        socket.on("message", (message) => {
+        socket.on("message", async (message) => {
             if (message.toString() === "REQUEST") {
-                const generatedId = getSessionId();
-                socket.send(generatedId);
+                const generatedId = await getSessionId();
+                socket.send(generatedId ? generatedId : "ERROR");
             }
         });
     });
     comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
     await vscode.commands.executeCommand("liveshare.start");
 };
-exports.startServer = startServer;
-const getSessionId = () => {
-    const liveshareInfo = vscode.extensions.getExtension("MS-vsliveshare.vsliveshare");
-    const sessionId = liveshareInfo?.exports.liveShareApis[0].session.id;
-    return sessionId;
+const getSessionId = async () => {
+    const liveshare = await vsls.getApi();
+    const id = liveshare?.session.id;
+    return id;
 };
 //# sourceMappingURL=index.js.map
