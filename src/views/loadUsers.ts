@@ -21,7 +21,14 @@ const buscarServiciosFastShare = () => {
   // Escuchar eventos de servicio
   browser.on("up", (service) => {
     if (service.type === "FAST_SHARE") {
-      const ipAddress = service.addresses[1];
+      let ipAddress: string | undefined;
+
+      const ipV4Regex = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+      if (ipV4Regex.test(service.addresses[0])) {
+        ipAddress = service.addresses[0];
+      } else {
+        ipAddress = service.addresses[1];
+      }
       const nickname = service.txt.nickname;
 
       if (!direccionesIP.has({ ipAddress, nickname })) {
@@ -30,7 +37,6 @@ const buscarServiciosFastShare = () => {
       }
     }
   });
-
 };
 
 buscarServiciosFastShare();
