@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findSession = void 0;
+exports.connectToWs = exports.openSession = void 0;
 const vscode = __importStar(require("vscode"));
 const bonjour_1 = __importDefault(require("bonjour"));
 const ws_1 = __importDefault(require("ws"));
@@ -39,31 +39,61 @@ const openSession = async (sessionId) => {
     const uriLink = vscode.Uri.parse(link);
     await vscode.env.openExternal(uriLink);
 };
-const findSession = () => {
-    comChannel.findOne({ type: "FAST_SHARE" }, function (service) {
-        if (service && service.type === "FAST_SHARE") {
-            const url = `ws://${service.referer.address}:${service.port}`;
-            // Cerrar la conexión existente antes de crear una nueva
-            if (existingWebSocket) {
-                existingWebSocket.close();
-                existingWebSocket = null;
-            }
-            existingWebSocket = new ws_1.default(url);
-            existingWebSocket.on("open", () => {
-                existingWebSocket?.send("REQUEST");
-            });
-            existingWebSocket.on("message", (data) => {
-                openSession(data.toString());
-                if (openConnectionButton && isConnectionButtonEnabled) {
-                    openConnectionButton.command = undefined;
-                    isConnectionButtonEnabled = false;
-                }
-            });
-            existingWebSocket.on("close", () => {
-                existingWebSocket = null;
-            });
+exports.openSession = openSession;
+const connectToWs = async (ip) => {
+    const url = `ws://${ip}:4000`;
+    // Cerrar la conexión existente antes de crear una nueva
+    if (existingWebSocket) {
+        existingWebSocket.close();
+        existingWebSocket = null;
+    }
+    existingWebSocket = new ws_1.default(url);
+    existingWebSocket.on("open", () => {
+        existingWebSocket?.send("REQUEST");
+    });
+    existingWebSocket.on("message", (data) => {
+        (0, exports.openSession)(data.toString());
+        if (openConnectionButton && isConnectionButtonEnabled) {
+            openConnectionButton.command = undefined;
+            isConnectionButtonEnabled = false;
         }
     });
+    existingWebSocket.on("close", () => {
+        existingWebSocket = null;
+    });
 };
-exports.findSession = findSession;
+exports.connectToWs = connectToWs;
+/* export const findSession = () => {
+  comChannel.findOne({ type: "FAST_SHARE" }, function (service) {
+    if (service && service.type === "FAST_SHARE") {
+      const url = `ws://${service.referer.address}:${service.port}`;
+
+      // Cerrar la conexión existente antes de crear una nueva
+      if (existingWebSocket) {
+        existingWebSocket.close();
+        existingWebSocket = null;
+      }
+
+      existingWebSocket = new WebSocket(url);
+
+      existingWebSocket.on("open", () => {
+        existingWebSocket?.send("REQUEST");
+      });
+
+      existingWebSocket.on("message", (data: WebSocket.Data) => {
+        openSession(data.toString());
+
+        if (openConnectionButton && isConnectionButtonEnabled) {
+          openConnectionButton.command = undefined;
+          isConnectionButtonEnabled = false;
+        }
+      });
+
+      existingWebSocket.on("close", () => {
+        existingWebSocket = null;
+      });
+    }
+  });
+};
+ */ 
 //# sourceMappingURL=connectToSession.js.map

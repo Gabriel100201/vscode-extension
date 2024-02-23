@@ -23,28 +23,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserListDataProvider = void 0;
-const vscode = __importStar(require("vscode"));
-class UserListDataProvider {
-    users;
-    iconPath = new vscode.ThemeIcon("account");
-    constructor(users) {
-        this.users = users;
+exports.getNickName = void 0;
+const childProcess = __importStar(require("child_process"));
+const getNickName = () => {
+    let nickName;
+    const result = childProcess.spawnSync("git", [
+        "config",
+        "--global",
+        "user.name",
+    ]);
+    const nombreDeUsuario = result.stdout.toString().trim();
+    if (nombreDeUsuario) {
+        nickName = nombreDeUsuario;
     }
-    getTreeItem(element) {
-        const treeItem = new vscode.TreeItem(element.nickname);
-        treeItem.iconPath = this.iconPath;
-        treeItem.description = "Active";
-        treeItem.command = {
-            command: "sugerencias.openConnection",
-            title: "Open User Session",
-            arguments: [element.ipAddress],
-        };
-        return treeItem;
+    else {
+        nickName = "Guest";
     }
-    getChildren() {
-        return Promise.resolve(this.users);
-    }
-}
-exports.UserListDataProvider = UserListDataProvider;
-//# sourceMappingURL=userListProvider.js.map
+    return nickName;
+};
+exports.getNickName = getNickName;
+//# sourceMappingURL=getNickName.js.map

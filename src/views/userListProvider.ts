@@ -6,13 +6,14 @@ export class UserListDataProvider implements vscode.TreeDataProvider<string> {
   constructor(private readonly users: any[]) {}
 
   getTreeItem(element: any): vscode.TreeItem {
-    const treeItem = new vscode.TreeItem(element);
+    const treeItem = new vscode.TreeItem(element.nickname);
     treeItem.iconPath = this.iconPath;
     treeItem.description = "Active";
 
     treeItem.command = {
       command: "sugerencias.openConnection",
       title: "Open User Session",
+      arguments: [element.ipAddress],
     };
 
     return treeItem;
@@ -22,4 +23,3 @@ export class UserListDataProvider implements vscode.TreeDataProvider<string> {
     return Promise.resolve(this.users);
   }
 }
-

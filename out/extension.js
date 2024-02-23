@@ -35,9 +35,9 @@ function activate(context) {
     let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", async () => {
         (0, server_1.startServer)();
     });
-    let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", () => {
+    let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", (ipAddress) => {
         // Busca una session activa de liveShare
-        (0, connectToSession_1.findSession)();
+        (0, connectToSession_1.connectToWs)(ipAddress);
     });
     let showUsers = vscode.commands.registerCommand("sugerencias.showUserList", () => {
         (0, loadUsers_1.loadUsers)();

@@ -33,7 +33,8 @@ const bonjour_1 = __importDefault(require("bonjour"));
 const ws_1 = __importDefault(require("ws"));
 const showInfo_1 = require("../messages/showInfo");
 const updateStatus_1 = require("../views/updateStatus");
-const sessionId_1 = require("../components/sessionId");
+const sessionId_1 = require("../constants/sessionId");
+const getNickName_1 = require("./getNickName");
 const comChannel = (0, bonjour_1.default)();
 const serviceType = "FAST_SHARE";
 let server = null;
@@ -68,7 +69,6 @@ const getSessionId = async () => {
     else {
         id = null;
     }
-    console.log(id);
     return id;
 };
 // Inicializacion de LiveShare
@@ -80,7 +80,12 @@ const startServer = async () => {
     sessionId_1.SessionIdManager.instance.sessionId = await getSessionId();
     // Se inicia el Server de WebSocket y  se comunica por bonjour
     initWS();
-    comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
+    comChannel.publish({
+        name: "FastShare",
+        type: serviceType,
+        port: 4000,
+        txt: { nickname: (0, getNickName_1.getNickName)() },
+    });
     (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
 };
 exports.startServer = startServer;

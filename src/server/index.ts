@@ -4,7 +4,8 @@ import bonjour from "bonjour";
 import WebSocket from "ws";
 import { showInfo } from "../messages/showInfo";
 import { updateStatus } from "../views/updateStatus";
-import { SessionIdManager, sessionIdType } from "../components/sessionId";
+import { SessionIdManager, sessionIdType } from "../constants/sessionId";
+import { getNickName } from "./getNickName";
 
 const comChannel = bonjour();
 const serviceType = "FAST_SHARE";
@@ -43,8 +44,6 @@ const getSessionId = async () => {
   } else {
     id = null;
   }
-
-  console.log(id);
   return id;
 };
 
@@ -52,14 +51,18 @@ const getSessionId = async () => {
 export const startServer = async () => {
   updateStatus("openConnectionStatus", "loading");
   showInfo("Iniciando LiveShare");
-
   // Se inicia la session de live share y se guarda el id de manera global
   await vscode.commands.executeCommand("liveshare.start");
   SessionIdManager.instance.sessionId = await getSessionId();
 
   // Se inicia el Server de WebSocket y  se comunica por bonjour
   initWS();
-  comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
+  comChannel.publish({
+    name: "FastShare",
+    type: serviceType,
+    port: 4000,
+    txt: { nickname: getNickName() },
+  });
 
   updateStatus("openConnectionStatus", "false");
 };

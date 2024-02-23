@@ -1,8 +1,6 @@
 import * as vscode from "vscode";
 import { startServer } from "./server";
-import { findSession } from "./client/connectToSession";
-import { validateShare } from "./server/validateShare";
-import { showInfo } from "./messages/showInfo";
+import { connectToWs } from "./client/connectToSession";
 import { loadUsers } from "./views/loadUsers";
 import { updateStatus } from "./views/updateStatus";
 
@@ -19,9 +17,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   let connectToCode = vscode.commands.registerCommand(
     "sugerencias.openConnection",
-    () => {
+    (ipAddress) => {
       // Busca una session activa de liveShare
-      findSession();
+      connectToWs(ipAddress);
     }
   );
 

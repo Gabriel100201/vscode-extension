@@ -22,20 +22,34 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadUsers = void 0;
 const vscode = __importStar(require("vscode"));
+const bonjour_1 = __importDefault(require("bonjour"));
 const userListProvider_1 = require("./userListProvider");
-const loadUsers = async () => {
-    try {
-        const users = ["Gabriel Funes", "Fabricio Castro"];
-        vscode.window.createTreeView("treeUsers", {
-            treeDataProvider: new userListProvider_1.UserListDataProvider(users),
-        });
-    }
-    catch (error) {
-        vscode.window.showErrorMessage(`Error al obtener la lista de usuarios: ${error.message}`);
-    }
+const direccionesIP = new Set();
+const loadUsers = () => {
+    vscode.window.createTreeView("treeUsers", {
+        treeDataProvider: new userListProvider_1.UserListDataProvider([...direccionesIP]),
+    });
 };
 exports.loadUsers = loadUsers;
+const buscarServiciosFastShare = () => {
+    const browser = (0, bonjour_1.default)().find({ type: "FAST_SHARE" });
+    // Escuchar eventos de servicio
+    browser.on("up", (service) => {
+        if (service.type === "FAST_SHARE") {
+            const ipAddress = service.addresses[1];
+            const nickname = service.txt.nickname;
+            if (!direccionesIP.has({ ipAddress, nickname })) {
+                direccionesIP.add({ ipAddress, nickname });
+                (0, exports.loadUsers)();
+            }
+        }
+    });
+};
+buscarServiciosFastShare();
 //# sourceMappingURL=loadUsers.js.map
