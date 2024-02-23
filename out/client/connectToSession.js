@@ -35,7 +35,7 @@ let isConnectionButtonEnabled = true;
 const comChannel = (0, bonjour_1.default)();
 let existingWebSocket = null;
 const openSession = async (sessionId) => {
-    const link = `vscode://ms-vsliveshare.vsliveshare/join?vslsLink=https://prod.liveshare.vsengsaas.visualstudio.com/join?${sessionId}`;
+    const link = `vscode://ms-vsliveshare.vsliveshare/join?vslsLink=${sessionId}`;
     const uriLink = vscode.Uri.parse(link);
     await vscode.env.openExternal(uriLink);
 };

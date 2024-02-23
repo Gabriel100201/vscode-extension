@@ -25,6 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
+const server_1 = require("./server");
 const connectToSession_1 = require("./client/connectToSession");
 const loadUsers_1 = require("./views/loadUsers");
 const updateStatus_1 = require("./views/updateStatus");
@@ -32,6 +33,7 @@ const updateStatus_1 = require("./views/updateStatus");
 (0, updateStatus_1.updateStatus)("openConnectionStatus", "true");
 function activate(context) {
     let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", async () => {
+        (0, server_1.startServer)();
     });
     let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", () => {
         // Busca una session activa de liveShare

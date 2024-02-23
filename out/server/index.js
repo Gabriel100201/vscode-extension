@@ -33,42 +33,55 @@ const bonjour_1 = __importDefault(require("bonjour"));
 const ws_1 = __importDefault(require("ws"));
 const showInfo_1 = require("../messages/showInfo");
 const updateStatus_1 = require("../views/updateStatus");
-const validateShare_1 = require("./validateShare");
+const sessionId_1 = require("../components/sessionId");
 const comChannel = (0, bonjour_1.default)();
 const serviceType = "FAST_SHARE";
 let server = null;
-const startServer = async () => {
-    (0, updateStatus_1.updateStatus)("openConnectionStatus", "loading");
-    const isServerOpen = await (0, validateShare_1.validateShare)();
-    if (isServerOpen) {
-        (0, showInfo_1.showInfo)("Ya hay una session en esta red");
-        (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
-        return;
-    }
-    else {
-        (0, showInfo_1.showInfo)("Iniciando LiveShare");
-        initWS();
-        (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
-    }
-};
-exports.startServer = startServer;
 const initWS = async () => {
     server = new ws_1.default.Server({ port: 4000 });
     server.on("connection", (socket) => {
         (0, showInfo_1.showInfo)("Nuevo cliente conectado");
         socket.on("message", async (message) => {
             if (message.toString() === "REQUEST") {
-                const generatedId = await getSessionId();
+                const generatedId = sessionId_1.SessionIdManager.instance.sessionId;
                 socket.send(generatedId ? generatedId : "ERROR");
             }
         });
     });
-    comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
-    await vscode.commands.executeCommand("liveshare.start");
 };
 const getSessionId = async () => {
-    const liveshare = await vsls.getApi();
-    const id = liveshare?.session.id;
+    let id;
+    const livesharePromise = vsls
+        .getApi()
+        .then((liveshare) => liveshare?.session.id);
+    const clipboardPromise = vscode.env.clipboard.readText();
+    const result = await Promise.race([livesharePromise, clipboardPromise]);
+    if (result) {
+        if (result.startsWith("https")) {
+            id = result;
+        }
+        else {
+            const formattedId = `https://prod.liveshare.vsengsaas.visualstudio.com/join?${result}`;
+            id = formattedId;
+        }
+    }
+    else {
+        id = null;
+    }
+    console.log(id);
     return id;
 };
+// Inicializacion de LiveShare
+const startServer = async () => {
+    (0, updateStatus_1.updateStatus)("openConnectionStatus", "loading");
+    (0, showInfo_1.showInfo)("Iniciando LiveShare");
+    // Se inicia la session de live share y se guarda el id de manera global
+    await vscode.commands.executeCommand("liveshare.start");
+    sessionId_1.SessionIdManager.instance.sessionId = await getSessionId();
+    // Se inicia el Server de WebSocket y  se comunica por bonjour
+    initWS();
+    comChannel.publish({ name: "FastShare", type: serviceType, port: 4000 });
+    (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
+};
+exports.startServer = startServer;
 //# sourceMappingURL=index.js.map

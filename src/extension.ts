@@ -11,8 +11,9 @@ updateStatus("openConnectionStatus", "true");
 
 export function activate(context: vscode.ExtensionContext) {
   let serverConfig = vscode.commands.registerCommand(
-    "sugerencias.openServer", async () => {
-      
+    "sugerencias.openServer",
+    async () => {
+      startServer();
     }
   );
 
