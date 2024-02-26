@@ -2,7 +2,7 @@
   "name": "fastshare",
   "displayName": "fastshare",
   "description": "Simplifica la conexión en Visual Studio Code Live Share dentro de tu red local.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -46,7 +46,7 @@
         {
           "id": "fastshare",
           "title": "fastshare",
-          "icon": "./src/assets/logoForVSCode.png"
+          "icon": "./src/assets/LogoSVG.svg"
         }
       ]
     },
