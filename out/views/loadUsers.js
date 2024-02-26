@@ -37,7 +37,7 @@ const loadUsers = () => {
     });
 };
 exports.loadUsers = loadUsers;
-const buscarServiciosFastShare = () => {
+const buscarServiciosfastshare = () => {
     const browser = (0, bonjour_1.default)().find({ type: "FAST_SHARE" });
     browser.on("down", (service) => {
         if (service.type === "FAST_SHARE") {
@@ -77,5 +77,5 @@ const buscarServiciosFastShare = () => {
         }
     });
 };
-buscarServiciosFastShare();
+buscarServiciosfastshare();
 //# sourceMappingURL=loadUsers.js.map

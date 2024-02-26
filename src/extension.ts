@@ -10,21 +10,21 @@ updateStatus("openConnectionStatus", "true");
 
 export function activate(context: vscode.ExtensionContext) {
   let serverConfig = vscode.commands.registerCommand(
-    "sugerencias.openServer",
+    "fastshare.openServer",
     async () => {
       startServer();
     }
   );
 
   let endSession = vscode.commands.registerCommand(
-    "sugerencias.closeServer",
+    "fastshare.closeServer",
     async () => {
       closeServer();
     }
   );
 
   let connectToCode = vscode.commands.registerCommand(
-    "sugerencias.openConnection",
+    "fastshare.openConnection",
     (ipAddress) => {
       // Busca una session activa de liveShare
       connectToWs(ipAddress);
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   let showUsers = vscode.commands.registerCommand(
-    "sugerencias.showUserList",
+    "fastshare.showUserList",
     () => {
       loadUsers();
     }
@@ -43,6 +43,6 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(connectToCode);
   context.subscriptions.push(showUsers);
 
-  vscode.commands.executeCommand("sugerencias.showUserList");
+  vscode.commands.executeCommand("fastshare.showUserList");
 }
 export function deactivate() {}

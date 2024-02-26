@@ -15,7 +15,7 @@ export const loadUsers = () => {
   });
 };
 
-const buscarServiciosFastShare = () => {
+const buscarServiciosfastshare = () => {
   const browser = bonjour().find({ type: "FAST_SHARE" });
 
   browser.on("down", (service) => {
@@ -63,4 +63,4 @@ const buscarServiciosFastShare = () => {
   });
 };
 
-buscarServiciosFastShare();
+buscarServiciosfastshare();

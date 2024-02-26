@@ -33,24 +33,24 @@ const index_1 = require("./server/index");
 // DEFINICIÓN DE VARIABLE GLOBAL
 (0, updateStatus_1.updateStatus)("openConnectionStatus", "true");
 function activate(context) {
-    let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", async () => {
+    let serverConfig = vscode.commands.registerCommand("fastshare.openServer", async () => {
         (0, server_1.startServer)();
     });
-    let endSession = vscode.commands.registerCommand("sugerencias.closeServer", async () => {
+    let endSession = vscode.commands.registerCommand("fastshare.closeServer", async () => {
         (0, index_1.closeServer)();
     });
-    let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", (ipAddress) => {
+    let connectToCode = vscode.commands.registerCommand("fastshare.openConnection", (ipAddress) => {
         // Busca una session activa de liveShare
         (0, connectToSession_1.connectToWs)(ipAddress);
     });
-    let showUsers = vscode.commands.registerCommand("sugerencias.showUserList", () => {
+    let showUsers = vscode.commands.registerCommand("fastshare.showUserList", () => {
         (0, loadUsers_1.loadUsers)();
     });
     context.subscriptions.push(serverConfig);
     context.subscriptions.push(endSession);
     context.subscriptions.push(connectToCode);
     context.subscriptions.push(showUsers);
-    vscode.commands.executeCommand("sugerencias.showUserList");
+    vscode.commands.executeCommand("fastshare.showUserList");
 }
 exports.activate = activate;
 function deactivate() { }

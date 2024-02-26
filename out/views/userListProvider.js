@@ -36,7 +36,7 @@ class UserListDataProvider {
         treeItem.iconPath = this.iconPath;
         treeItem.description = "Active";
         treeItem.command = {
-            command: "sugerencias.openConnection",
+            command: "fastshare.openConnection",
             title: "Open User Session",
             arguments: [element.ipAddress],
         };

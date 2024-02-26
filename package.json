@@ -1,8 +1,8 @@
 {
-  "name": "sugerencias",
-  "displayName": "sugerencias",
-  "description": "extencion para realizar sugerencias",
-  "version": "0.0.1",
+  "name": "fastshare",
+  "displayName": "fastshare",
+  "description": "Simplifica la conexión en Visual Studio Code Live Share dentro de tu red local.",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -14,15 +14,15 @@
   "contributes": {
     "commands": [
       {
-        "command": "sugerencias.openServer",
+        "command": "fastshare.openServer",
         "title": "openServer"
       },
       {
-        "command": "sugerencias.openConnection",
+        "command": "fastshare.openConnection",
         "title": "openConnection"
       },
       {
-        "command": "sugerencias.showUserList",
+        "command": "fastshare.showUserList",
         "title": "Actualizar Usuarios",
         "icon": "$(refresh)"
       }
@@ -30,7 +30,7 @@
     "menus": {
       "view/title": [
         {
-          "command": "sugerencias.showUserList",
+          "command": "fastshare.showUserList",
           "group": "navigation",
           "when": "view == treeUsers"
         }
@@ -39,14 +39,14 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "fastShare",
-          "title": "FastShare",
+          "id": "fastshare",
+          "title": "fastshare",
           "icon": "./src/assets/duck.svg"
         }
       ]
     },
     "views": {
-      "fastShare": [
+      "fastshare": [
         {
           "id": "conections",
           "name": "Conexiones"
@@ -60,37 +60,37 @@
     "viewsWelcome": [
       {
         "view": "conections",
-        "contents": "[Abrir Conexión](command:sugerencias.openServer)",
+        "contents": "[Abrir Conexión](command:fastshare.openServer)",
         "when": "openConnectionStatus == 'true'",
         "enablement": "true"
       },
       {
         "view": "conections",
-        "contents": "[Conexion Abierta](command:sugerencias.openServer)",
+        "contents": "[Conexion Abierta](command:fastshare.openServer)",
         "when": "openConnectionStatus == 'false'",
         "enablement": "false"
       },
       {
         "view": "conections",
-        "contents": "[Cargando...](command:sugerencias.openServer)",
+        "contents": "[Cargando...](command:fastshare.openServer)",
         "when": "openConnectionStatus == 'loading'",
         "enablement": "false"
       },
       {
         "view": "conections",
-        "contents": "[Cerrar Conexión](command:sugerencias.closeServer)",
+        "contents": "[Cerrar Conexión](command:fastshare.closeServer)",
         "when": "openConnectionStatus == 'true'",
         "enablement": "false"
       },
       {
         "view": "conections",
-        "contents": "[Cargando...](command:sugerencias.closeServer)",
+        "contents": "[Cargando...](command:fastshare.closeServer)",
         "when": "openConnectionStatus == 'loading'",
         "enablement": "false"
       },
       {
         "view": "conections",
-        "contents": "[Cerrar Conexión](command:sugerencias.closeServer)",
+        "contents": "[Cerrar Conexión](command:fastshare.closeServer)",
         "when": "openConnectionStatus == 'false'",
         "enablement": "true"
       }

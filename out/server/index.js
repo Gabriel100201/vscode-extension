@@ -89,7 +89,7 @@ const startServer = async () => {
     // Se inicia el Server de WebSocket y  se comunica por bonjour
     initWS();
     comChannel.publish({
-        name: "FastShare",
+        name: "fastshare",
         type: serviceType,
         port: 4000,
         txt: { nickname: (0, getNickName_1.getNickName)() },
