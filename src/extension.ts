@@ -3,6 +3,7 @@ import { startServer } from "./server";
 import { connectToWs } from "./client/connectToSession";
 import { loadUsers } from "./views/loadUsers";
 import { updateStatus } from "./views/updateStatus";
+import { closeServer } from "./server/index";
 
 // DEFINICIÓN DE VARIABLE GLOBAL
 updateStatus("openConnectionStatus", "true");
@@ -12,6 +13,13 @@ export function activate(context: vscode.ExtensionContext) {
     "sugerencias.openServer",
     async () => {
       startServer();
+    }
+  );
+
+  let endSession = vscode.commands.registerCommand(
+    "sugerencias.closeServer",
+    async () => {
+      closeServer();
     }
   );
 
@@ -31,6 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(serverConfig);
+  context.subscriptions.push(endSession);
   context.subscriptions.push(connectToCode);
   context.subscriptions.push(showUsers);
 

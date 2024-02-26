@@ -47,6 +47,14 @@ const getSessionId = async () => {
   return id;
 };
 
+export const closeServer = async () => {
+  updateStatus("openConnectionStatus", "loading");
+  await vscode.commands.executeCommand("liveshare.end");
+  updateStatus("openConnectionStatus", "true");
+  comChannel.unpublishAll();
+  console.log("UNPUBLISH ADVICE");
+};
+
 // Inicializacion de LiveShare
 export const startServer = async () => {
   updateStatus("openConnectionStatus", "loading");

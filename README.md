@@ -1,6 +1,4 @@
 Tasks:
 
-- Quitar boton de conectarse ✅
-- Quitar viewWelcome en vista User List ✅
-- Mostrar user list dentro de vista conexiones ⏲️
-- Mostrar los usuarios dinamicamente
+- Quitar funcionalidades no usadas
+- Refresh cuando una session deja de compartirse (Enviar aviso por bonjour con ip a dejar de mostar)

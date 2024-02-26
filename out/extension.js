@@ -29,11 +29,15 @@ const server_1 = require("./server");
 const connectToSession_1 = require("./client/connectToSession");
 const loadUsers_1 = require("./views/loadUsers");
 const updateStatus_1 = require("./views/updateStatus");
+const index_1 = require("./server/index");
 // DEFINICIÓN DE VARIABLE GLOBAL
 (0, updateStatus_1.updateStatus)("openConnectionStatus", "true");
 function activate(context) {
     let serverConfig = vscode.commands.registerCommand("sugerencias.openServer", async () => {
         (0, server_1.startServer)();
+    });
+    let endSession = vscode.commands.registerCommand("sugerencias.closeServer", async () => {
+        (0, index_1.closeServer)();
     });
     let connectToCode = vscode.commands.registerCommand("sugerencias.openConnection", (ipAddress) => {
         // Busca una session activa de liveShare
@@ -43,6 +47,7 @@ function activate(context) {
         (0, loadUsers_1.loadUsers)();
     });
     context.subscriptions.push(serverConfig);
+    context.subscriptions.push(endSession);
     context.subscriptions.push(connectToCode);
     context.subscriptions.push(showUsers);
     vscode.commands.executeCommand("sugerencias.showUserList");

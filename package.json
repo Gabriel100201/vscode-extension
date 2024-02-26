@@ -75,6 +75,24 @@
         "contents": "[Cargando...](command:sugerencias.openServer)",
         "when": "openConnectionStatus == 'loading'",
         "enablement": "false"
+      },
+      {
+        "view": "conections",
+        "contents": "[Cerrar Conexión](command:sugerencias.closeServer)",
+        "when": "openConnectionStatus == 'true'",
+        "enablement": "false"
+      },
+      {
+        "view": "conections",
+        "contents": "[Cargando...](command:sugerencias.closeServer)",
+        "when": "openConnectionStatus == 'loading'",
+        "enablement": "false"
+      },
+      {
+        "view": "conections",
+        "contents": "[Cerrar Conexión](command:sugerencias.closeServer)",
+        "when": "openConnectionStatus == 'false'",
+        "enablement": "true"
       }
     ]
   },

@@ -28,11 +28,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectToWs = exports.openSession = void 0;
 const vscode = __importStar(require("vscode"));
-const bonjour_1 = __importDefault(require("bonjour"));
 const ws_1 = __importDefault(require("ws"));
 let openConnectionButton;
 let isConnectionButtonEnabled = true;
-const comChannel = (0, bonjour_1.default)();
 let existingWebSocket = null;
 const openSession = async (sessionId) => {
     const link = `vscode://ms-vsliveshare.vsliveshare/join?vslsLink=${sessionId}`;
@@ -63,37 +61,4 @@ const connectToWs = async (ip) => {
     });
 };
 exports.connectToWs = connectToWs;
-/* export const findSession = () => {
-  comChannel.findOne({ type: "FAST_SHARE" }, function (service) {
-    if (service && service.type === "FAST_SHARE") {
-      const url = `ws://${service.referer.address}:${service.port}`;
-
-      // Cerrar la conexión existente antes de crear una nueva
-      if (existingWebSocket) {
-        existingWebSocket.close();
-        existingWebSocket = null;
-      }
-
-      existingWebSocket = new WebSocket(url);
-
-      existingWebSocket.on("open", () => {
-        existingWebSocket?.send("REQUEST");
-      });
-
-      existingWebSocket.on("message", (data: WebSocket.Data) => {
-        openSession(data.toString());
-
-        if (openConnectionButton && isConnectionButtonEnabled) {
-          openConnectionButton.command = undefined;
-          isConnectionButtonEnabled = false;
-        }
-      });
-
-      existingWebSocket.on("close", () => {
-        existingWebSocket = null;
-      });
-    }
-  });
-};
- */ 
 //# sourceMappingURL=connectToSession.js.map

@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.startServer = void 0;
+exports.startServer = exports.closeServer = void 0;
 const vscode = __importStar(require("vscode"));
 const vsls = __importStar(require("vsls"));
 const bonjour_1 = __importDefault(require("bonjour"));
@@ -71,6 +71,14 @@ const getSessionId = async () => {
     }
     return id;
 };
+const closeServer = async () => {
+    (0, updateStatus_1.updateStatus)("openConnectionStatus", "loading");
+    await vscode.commands.executeCommand("liveshare.end");
+    (0, updateStatus_1.updateStatus)("openConnectionStatus", "true");
+    comChannel.unpublishAll();
+    console.log("UNPUBLISH ADVICE");
+};
+exports.closeServer = closeServer;
 // Inicializacion de LiveShare
 const startServer = async () => {
     (0, updateStatus_1.updateStatus)("openConnectionStatus", "loading");
