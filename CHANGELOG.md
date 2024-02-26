@@ -1,9 +1,10 @@
-# Change Log
+# Changelog
 
-All notable changes to the "fastshare" extension will be documented in this file.
+Todas las cambios notables en la extensión "fastshare" se documentarán en este archivo.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.0.0] - 26/02/2024
 
-## [Unreleased]
+### Añadido
 
-- Initial release
+- Funcionalidad principal de conexión rápida a sesiones Live Share en la misma red local.
+- Interfaz intuitiva para seleccionar compañeros por su nickname.
