@@ -31,20 +31,20 @@ const vscode = __importStar(require("vscode"));
 const vsls = __importStar(require("vsls"));
 const bonjour_1 = __importDefault(require("bonjour"));
 const ws_1 = __importDefault(require("ws"));
-const showInfo_1 = require("../messages/showInfo");
-const updateStatus_1 = require("../views/updateStatus");
-const sessionId_1 = require("../constants/sessionId");
-const getNickName_1 = require("./getNickName");
+const showInfo_js_1 = require("../messages/showInfo.js");
+const updateStatus_js_1 = require("../views/updateStatus.js");
+const sessionId_js_1 = require("../constants/sessionId.js");
+const getNickName_js_1 = require("./getNickName.js");
 const comChannel = (0, bonjour_1.default)();
 const serviceType = "FAST_SHARE";
 let server = null;
 const initWS = async () => {
     server = new ws_1.default.Server({ port: 4000 });
     server.on("connection", (socket) => {
-        (0, showInfo_1.showInfo)("Nuevo cliente conectado");
+        (0, showInfo_js_1.showInfo)("Nuevo cliente conectado");
         socket.on("message", async (message) => {
             if (message.toString() === "REQUEST") {
-                const generatedId = sessionId_1.SessionIdManager.instance.sessionId;
+                const generatedId = sessionId_js_1.SessionIdManager.instance.sessionId;
                 socket.send(generatedId ? generatedId : "ERROR");
             }
         });
@@ -72,29 +72,29 @@ const getSessionId = async () => {
     return id;
 };
 const closeServer = async () => {
-    (0, updateStatus_1.updateStatus)("openConnectionStatus", "loading");
+    (0, updateStatus_js_1.updateStatus)("openConnectionStatus", "loading");
     await vscode.commands.executeCommand("liveshare.end");
-    (0, updateStatus_1.updateStatus)("openConnectionStatus", "true");
+    (0, updateStatus_js_1.updateStatus)("openConnectionStatus", "true");
     comChannel.unpublishAll();
     console.log("UNPUBLISH ADVICE");
 };
 exports.closeServer = closeServer;
 // Inicializacion de LiveShare
 const startServer = async () => {
-    (0, updateStatus_1.updateStatus)("openConnectionStatus", "loading");
-    (0, showInfo_1.showInfo)("Iniciando LiveShare");
+    (0, updateStatus_js_1.updateStatus)("openConnectionStatus", "loading");
+    (0, showInfo_js_1.showInfo)("Iniciando LiveShare");
     // Se inicia la session de live share y se guarda el id de manera global
     await vscode.commands.executeCommand("liveshare.start");
-    sessionId_1.SessionIdManager.instance.sessionId = await getSessionId();
+    sessionId_js_1.SessionIdManager.instance.sessionId = await getSessionId();
     // Se inicia el Server de WebSocket y  se comunica por bonjour
     initWS();
     comChannel.publish({
         name: "fastshare",
         type: serviceType,
         port: 4000,
-        txt: { nickname: (0, getNickName_1.getNickName)() },
+        txt: { nickname: (0, getNickName_js_1.getNickName)() },
     });
-    (0, updateStatus_1.updateStatus)("openConnectionStatus", "false");
+    (0, updateStatus_js_1.updateStatus)("openConnectionStatus", "false");
 };
 exports.startServer = startServer;
 //# sourceMappingURL=index.js.map

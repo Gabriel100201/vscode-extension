@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import bonjour from "bonjour";
-import { UserListDataProvider } from "./userListProvider";
+import { UserListDataProvider } from "./userListProvider.js";
 
 interface UserInfo {
   ipAddress: string;

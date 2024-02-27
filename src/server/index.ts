@@ -2,10 +2,10 @@ import * as vscode from "vscode";
 import * as vsls from "vsls";
 import bonjour from "bonjour";
 import WebSocket from "ws";
-import { showInfo } from "../messages/showInfo";
-import { updateStatus } from "../views/updateStatus";
-import { SessionIdManager, sessionIdType } from "../constants/sessionId";
-import { getNickName } from "./getNickName";
+import { showInfo } from "../messages/showInfo.js";
+import { updateStatus } from "../views/updateStatus.js";
+import { SessionIdManager, sessionIdType } from "../constants/sessionId.js";
+import { getNickName } from "./getNickName.js";
 
 const comChannel = bonjour();
 const serviceType = "FAST_SHARE";

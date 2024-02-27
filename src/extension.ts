@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
-import { startServer } from "./server";
-import { connectToWs } from "./client/connectToSession";
-import { loadUsers } from "./views/loadUsers";
-import { updateStatus } from "./views/updateStatus";
-import { closeServer } from "./server/index";
+import { startServer } from "./server/index.js";
+import { connectToWs } from "./client/connectToSession.js";
+import { loadUsers } from "./views/loadUsers.js";
+import { updateStatus } from "./views/updateStatus.js";
+import { closeServer } from "./server/index.js";
 
 // DEFINICIÓN DE VARIABLE GLOBAL
 updateStatus("openConnectionStatus", "true");

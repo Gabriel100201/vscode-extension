@@ -25,26 +25,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
-const server_1 = require("./server");
-const connectToSession_1 = require("./client/connectToSession");
-const loadUsers_1 = require("./views/loadUsers");
-const updateStatus_1 = require("./views/updateStatus");
-const index_1 = require("./server/index");
+const index_js_1 = require("./server/index.js");
+const connectToSession_js_1 = require("./client/connectToSession.js");
+const loadUsers_js_1 = require("./views/loadUsers.js");
+const updateStatus_js_1 = require("./views/updateStatus.js");
+const index_js_2 = require("./server/index.js");
 // DEFINICIÓN DE VARIABLE GLOBAL
-(0, updateStatus_1.updateStatus)("openConnectionStatus", "true");
+(0, updateStatus_js_1.updateStatus)("openConnectionStatus", "true");
 function activate(context) {
     let serverConfig = vscode.commands.registerCommand("fastshare.openServer", async () => {
-        (0, server_1.startServer)();
+        (0, index_js_1.startServer)();
     });
     let endSession = vscode.commands.registerCommand("fastshare.closeServer", async () => {
-        (0, index_1.closeServer)();
+        (0, index_js_2.closeServer)();
     });
     let connectToCode = vscode.commands.registerCommand("fastshare.openConnection", (ipAddress) => {
         // Busca una session activa de liveShare
-        (0, connectToSession_1.connectToWs)(ipAddress);
+        (0, connectToSession_js_1.connectToWs)(ipAddress);
     });
     let showUsers = vscode.commands.registerCommand("fastshare.showUserList", () => {
-        (0, loadUsers_1.loadUsers)();
+        (0, loadUsers_js_1.loadUsers)();
     });
     context.subscriptions.push(serverConfig);
     context.subscriptions.push(endSession);

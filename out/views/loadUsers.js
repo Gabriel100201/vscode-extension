@@ -29,11 +29,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadUsers = void 0;
 const vscode = __importStar(require("vscode"));
 const bonjour_1 = __importDefault(require("bonjour"));
-const userListProvider_1 = require("./userListProvider");
+const userListProvider_js_1 = require("./userListProvider.js");
 const direccionesIP = new Set();
 const loadUsers = () => {
     vscode.window.createTreeView("treeUsers", {
-        treeDataProvider: new userListProvider_1.UserListDataProvider([...direccionesIP]),
+        treeDataProvider: new userListProvider_js_1.UserListDataProvider([...direccionesIP]),
     });
 };
 exports.loadUsers = loadUsers;
