@@ -1,6 +1,5 @@
 {
   "name": "fastshare",
-  "type": "commonjs",
   "displayName": "fastshare",
   "description": "Simplifica la conexión en Visual Studio Code Live Share dentro de tu red local.",
   "version": "1.0.3",
@@ -17,7 +16,7 @@
     "url": "https://github.com/Gabriel100201/vscode-extension"
   },
   "activationEvents": [],
-  "main": "./extension/out/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
@@ -104,8 +103,8 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run esbuild-base -- --minify",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=/extension/out/extension.js --external:vscode --format=cjs --platform=node",
+    "vscode:prepublish": "npm run esbuild-base -- --sourcemap",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=./out/extension.js --external:vscode --format=cjs --platform=node --packages=external",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
     "test-compile": "tsc -p ./",
