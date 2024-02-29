@@ -20,7 +20,7 @@
     {
       "label": "esbuild",
       "type": "npm",
-      "script": "esbuild-base -- --sourcemap",
+      "script": "esbuild-base -- --minify",
       "problemMatcher": "$tsc-watch",
       "isBackground": true,
       "presentation": {
@@ -28,7 +28,7 @@
       },
       "group": {
         "kind": "build",
-        "isDefault": true
+        "isDefault": false
       }
     }
   ]

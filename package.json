@@ -2,7 +2,7 @@
   "name": "fastshare",
   "displayName": "fastshare",
   "description": "Simplifica la conexión en Visual Studio Code Live Share dentro de tu red local.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "icon": "images/logoForVSCode.png",
   "engines": {
     "vscode": "^1.86.0"
@@ -104,8 +104,8 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run esbuild-base -- --sourcemap",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=./out/extension.js --external:vscode --format=cjs --platform=node --packages=external",
-    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=./out/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --minify",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
     "test-compile": "tsc -p ./",
     "compile": "tsc -p ./",
@@ -127,7 +127,8 @@
     "bonjour": "^3.5.0",
     "esbuild": "^0.20.1",
     "eslint": "^8.56.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vsls": "^1.0.4753"
   },
   "dependencies": {
     "axios": "^1.6.7",
